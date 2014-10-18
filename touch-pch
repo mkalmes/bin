@@ -1,10 +1,36 @@
 #!/bin/sh
 # find all files with the extension pch and touch them
-if [ -z "$1" ]; then
-    echo "Usage:\n`basename $0`: path";
-    exit 1;
-fi
+print_usage ()
+{
+	echo "Usage: `basename $0` [-d n] path";
+	exit 1;
+}
+dflag=
+while getopts ":d:" opt; do
+    case $opt in
+        d)
+            dflag=1;
+            dval="$OPTARG";
+            ;;
+        :)
+            print_usage;
+            ;;
+    esac
+done
+shift $(($OPTIND - 1))
 
+# check if dval is a number
+if [ ! -z $dflag ]; then
+    if ! let $dval 2>/dev/null; then
+        print_usage;
+    fi
+fi
+depth=${dval:-1}
+
+# check if path was provided
+if [ -z "$1" ]; then
+    print_usage;
+fi
 path="${1}";
 
 if [ ! -d "${path}" ]; then
@@ -12,4 +38,4 @@ if [ ! -d "${path}" ]; then
     exit 2;
 fi
 
-/usr/bin/find "${path}" -iname "*.pch" -exec touch {} +;
+/usr/bin/find "${path}" -maxdepth $depth -iname "*.pch" -exec touch {} +;
