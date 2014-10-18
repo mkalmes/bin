@@ -7,4 +7,9 @@ fi
 
 path="${1}";
 
+if [ ! -d "${path}" ]; then
+    echo "Not a path: $path";
+    exit 2;
+fi
+
 /usr/bin/find "${path}" -iname "*.pch" -exec touch {} +;
