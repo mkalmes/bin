@@ -1,5 +1,20 @@
 #!/bin/sh
 # find all files with the extension pch and touch them
+dflag=
+while getopts ":d:" opt; do
+    case $opt in
+        d)
+            dflag=1;
+            dval="$OPTARG";
+            ;;
+        :)
+            echo "Usage:\n`basename $0`: path";
+            exit 1;
+            ;;
+    esac
+done
+shift $(($OPTIND - 1))
+
 if [ -z "$1" ]; then
     echo "Usage:\n`basename $0`: path";
     exit 1;
