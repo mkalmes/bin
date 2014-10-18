@@ -1,3 +1,15 @@
 #!/bin/sh
 # find all files with the extension pch and touch them
-find . -iname "*.pch" -exec touch {} +;
+if [ -z "$1" ]; then
+    echo "Usage:\n`basename $0`: path";
+    exit 1;
+fi
+
+path="${1}";
+
+if [ ! -d "${path}" ]; then
+    echo "Not a path: $path";
+    exit 2;
+fi
+
+/usr/bin/find "${path}" -iname "*.pch" -exec touch {} +;
