@@ -12,4 +12,4 @@ if [ ! -d "${path}" ]; then
     exit 2;
 fi
 
-/usr/bin/find "${path}" -iname "*.pch" -exec touch {} +;
+/usr/bin/find "${path}" -maxdepth 1 -iname "*.pch" -exec touch {} +;
