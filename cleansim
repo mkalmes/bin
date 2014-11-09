@@ -1,0 +1,5 @@
+#!/bin/sh
+
+for sim in `xcrun instruments -s devices | grep Simulator | cut -d "[" -f2 | cut -d "]" -f1 `; do
+	xcrun simctl erase $sim;
+done;
